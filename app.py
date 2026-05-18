@@ -269,6 +269,10 @@ def api_export():
 
         preserve_from_modified = {'xl/sharedStrings.xml', 'xl/styles.xml'}
         preserve_from_modified.update(sheet_xml_map.values())
+        # 수정된 시트의 rels 파일도 openpyxl 버전 사용 (rId 재번호 부여 동기화)
+        for xml_path in sheet_xml_map.values():
+            parts = xml_path.rsplit('/', 1)
+            preserve_from_modified.add(f'{parts[0]}/_rels/{parts[1]}.rels')
 
         # 템플릿 시트 XML에서 drawing/legacyDrawing 참조 태그 추출 (openpyxl이 제거하므로 복원용)
         # <drawing r:id="..."/>        — DrawingML (도형, 차트)
