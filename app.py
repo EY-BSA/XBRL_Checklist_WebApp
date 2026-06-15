@@ -42,6 +42,10 @@ def _load_std():
     return std
 
 
+# 서버 시작 시 한 번만 로드
+_STD = _load_std()
+
+
 # ─── 직렬화 ──────────────────────────────────────────────────────────────────
 
 def _serialize(data, results, summary) -> dict:
@@ -140,7 +144,7 @@ def api_check():
     try:
         xlsx_bytes = f.read()
         data       = parse_taxonomy_xlsx(xlsx_bytes)
-        std        = _load_std()
+        std        = _STD
         results    = run_all_checks(data, std)
         summary    = get_summary(results)
         out        = _serialize(data, results, summary)
